@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Una pregunta solo para ti, Dulce ❤️</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #ffafbd, #ffc3a0);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow-x: hidden;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            width: 100%;
+            background-color: rgba(255, 255, 255, 0.97);
+            border-radius: 20px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+            overflow: hidden;
+            padding: 40px;
+            text-align: center;
+            position: relative;
+            border: 3px solid #ff4d6d;
+        }
+        
+        .hearts-container {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        .heart {
+            position: absolute;
+            color: #ff6b8b;
+            font-size: 20px;
+            opacity: 0;
+            animation: float 6s infinite linear;
+        }
+        
+        @keyframes float {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+        
+        .content {
+            position: relative;
+            z-index: 1;
+        }
+        
+        h1 {
+            color: #ff4d6d;
+            margin-bottom: 20px;
+            font-size: 2.5rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .name-highlight {
+            color: #ff0066;
+            text-shadow: 0 0 10px rgba(255, 0, 102, 0.3);
+            font-size: 3rem;
+            display: block;
+            margin-top: 10px;
+            animation: nameGlow 2s infinite alternate;
+        }
+        
+        @keyframes nameGlow {
+            0% { text-shadow: 0 0 10px rgba(255, 0, 102, 0.3); }
+            100% { text-shadow: 0 0 20px rgba(255, 0, 102, 0.6), 0 0 30px rgba(255, 0, 102, 0.4); }
+        }
+        
+        .message {
+            font-size: 1.2rem;
+            line-height: 1.7;
+            color: #555;
+            margin-bottom: 30px;
+            padding: 0 20px;
+            font-style: italic;
+        }
+        
+        .message p {
+            margin-bottom: 15px;
+        }
+        
+        .photo-placeholder {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            margin: 0 auto 30px;
+            background: linear-gradient(135deg, #ffafbd, #ffc3a0);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 5px solid #ff4d6d;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        
+        .photo-placeholder i {
+            font-size: 4rem;
+            color: white;
+        }
+        
+        .question {
+            background: linear-gradient(135deg, #ff4d6d, #ff8fa3);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            margin: 30px 0;
+            font-size: 1.8rem;
+            font-weight: bold;
+            box-shadow: 0 5px 15px rgba(255, 77, 109, 0.3);
+            position: relative;
+        }
+        
+        .question::before {
+            content: "💌";
+            position: absolute;
+            top: -15px;
+            left: 20px;
+            font-size: 2rem;
+        }
+        
+        .buttons {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 40px;
+            flex-wrap: wrap;
+            transition: all 0.5s ease;
+        }
+        
+        .btn {
+            padding: 15px 40px;
+            font-size: 1.3rem;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 180px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 5px;
+            height: 5px;
+            background: rgba(255, 255, 255, 0.5);
+            opacity: 0;
+            border-radius: 100%;
+            transform: scale(1, 1) translate(-50%);
+            transform-origin: 50% 50%;
+        }
+        
+        .btn:focus:not(:active)::after {
+            animation: ripple 1s ease-out;
+        }
+        
+        @keyframes ripple {
+            0% {
+                transform: scale(0, 0);
+                opacity: 0.5;
+            }
+            100% {
+                transform: scale(20, 20);
+                opacity: 0;
+            }
+        }
+        
+        .btn-yes {
+            background: linear-gradient(135deg, #4CAF50, #45a049);
+            color: white;
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        
+        .btn-yes:hover {
+            background: linear-gradient(135deg, #45a049, #3d8b40);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(76, 175, 80, 0.4);
+        }
+        
+        .btn-no {
+            background: linear-gradient(135deg, #f44336, #d32f2f);
+            color: white;
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        
+        .btn-no:hover {
+            background: linear-gradient(135deg, #d32f2f, #b71c1c);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(244, 67, 54, 0.4);
+        }
+        
+        .btn i {
+            margin-right: 10px;
+        }
+        
+        .btn-shrink {
+            animation: shrink 0.5s forwards;
+        }
+        
+        .btn-grow {
+            animation: grow 0.5s forwards;
+        }
+        
+        @keyframes shrink {
+            from { transform: scale(1); opacity: 1; }
+            to { transform: scale(0.1); opacity: 0.3; }
+        }
+        
+        @keyframes grow {
+            from { transform: scale(1); }
+            to { transform: scale(1.3); }
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .response {
+            margin-top: 30px;
+            padding: 30px;
+            border-radius: 15px;
+            background-color: #fef5f7;
+            animation: fadeIn 1s ease;
+            border: 2px dashed #ff8fa3;
+        }
+        
+        .response h2 {
+            color: #ff4d6d;
+            margin-bottom: 15px;
+            font-size: 2.2rem;
+        }
+        
+        .response p {
+            font-size: 1.2rem;
+            color: #555;
+            line-height: 1.7;
+            margin-bottom: 15px;
+        }
+        
+        .intimate-message {
+            background: linear-gradient(135deg, #fff0f3, #fff9fa);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 5px solid #ff4d6d;
+            font-style: italic;
+            text-align: left;
+        }
+        
+        .countdown {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
+        
+        .countdown-item {
+            background: linear-gradient(135deg, #ff4d6d, #ff8fa3);
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            min-width: 80px;
+        }
+        
+        .countdown-number {
+            font-size: 2rem;
+            font-weight: bold;
+        }
+        
+        .countdown-label {
+            font-size: 0.9rem;
+            margin-top: 5px;
+        }
+        
+        .photo-upload {
+            margin: 20px 0;
+        }
+        
+        .photo-upload button {
+            background: linear-gradient(135deg, #2196F3, #0b7dda);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 1rem;
+            margin-top: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .photo-upload button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(33, 150, 243, 0.3);
+        }
+        
+        #uploadedPhoto {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: cover;
+            display: none;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+        
+        .footer {
+            margin-top: 30px;
+            color: #888;
+            font-size: 0.9rem;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+        
+        .signature {
+            font-family: cursive;
+            color: #ff4d6d;
+            font-size: 1.2rem;
+            margin-top: 10px;
+        }
+        
+        @media (max-width: 600px) {
+            .container {
+                padding: 25px 15px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .name-highlight {
+                font-size: 2.2rem;
+            }
+            
+            .question {
+                font-size: 1.5rem;
+                padding: 20px;
+            }
+            
+            .buttons {
+                flex-direction: column;
+                align-items: center;
+                gap: 20px;
+            }
+            
+            .btn {
+                width: 100%;
+                max-width: 250px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="hearts-container" id="heartsContainer"></div>
+        
+        <div class="content" id="mainContent">
+            <h1>Para ti, mi amor</h1>
+            <div class="name-highlight">Dulce</div>
+            
+            <div class="photo-placeholder" id="photoContainer">
+                <i class="fas fa-heart"></i>
+                <img id="uploadedPhoto" alt="Nuestra foto">
+            </div>
+            
+            <div class="photo-upload">
+                <p>¿Quieres subir una foto nuestra para hacer este momento aún más especial?</p>
+                <input type="file" id="photoInput" accept="image/*" style="display: none;">
+                <button onclick="document.getElementById('photoInput').click()">
+                    <i class="fas fa-camera"></i> Subir una foto nuestra
+                </button>
+            </div>
+            
+            <div class="message">
+                <p>Mi Dulce, desde que llegaste a mi vida, cada día tiene más color, más sentido.</p>
+                <p>Recuerdo la primera vez que te vi sonreír y supe que quería hacerte sonreír así todos los días de mi vida.</p>
+                <p>Eres esa luz que ilumina mis días grises, esa calma en mis tormentas, esa razón por la que mi corazón late con más fuerza cada mañana.</p>
+            </div>
+            
+            <div class="question pulse">
+                <p>Dulce, amor mío...<br>¿Quieres ser mi San Valentín? 💌</p>
+            </div>
+            
+            <div class="countdown" id="countdown">
+                <div class="countdown-item">
+                    <div class="countdown-number" id="days">14</div>
+                    <div class="countdown-label">Días</div>
+                </div>
+                <div class="countdown-item">
+                    <div class="countdown-number" id="hours">00</div>
+                    <div class="countdown-label">Horas</div>
+                </div>
+                <div class="countdown-item">
+                    <div class="countdown-number" id="minutes">00</div>
+                    <div class="countdown-label">Minutos</div>
+                </div>
+                <div class="countdown-item">
+                    <div class="countdown-number" id="seconds">00</div>
+                    <div class="countdown-label">Segundos</div>
+                </div>
+            </div>
+            
+            <div class="buttons" id="buttonsContainer">
+                <button class="btn btn-yes" id="yesBtn">
+                    <i class="fas fa-heart-circle-check"></i> ¡SÍ, MI AMOR!
+                </button>
+                <button class="btn btn-no" id="noBtn">
+                    <i class="fas fa-heart-crack"></i> No, cariño
+                </button>
+            </div>
+            
+            <div class="footer">
+                <p>Cada latido de mi corazón lleva tu nombre</p>
+                <div class="signature">Con todo mi amor, para ti 💝</div>
+            </div>
+        </div>
+        
+        <div class="response hidden" id="yesResponse">
+            <h2>¡SÍ! ¡SÍ! ¡SÍ! 💖🎉</h2>
+            <div class="intimate-message">
+                <p>Mi Dulce preciosa, no sabes la alegría que siento en este momento. Has hecho que mi mundo entero brille.</p>
+                <p>Eres la respuesta a preguntas que ni siquiera sabía que tenía, el sueño que nunca quiero despertar.</p>
+            </div>
+            <p>Prometo hacer de este San Valentín algo tan especial como tú lo eres para mí. Cada detalle, cada momento, estará lleno de todo el amor que siento por ti.</p>
+            <p>Ya estoy imaginando ese día a tu lado, riendo, compartiendo y creando un recuerdo que atesoraré por siempre.</p>
+            <p>Eres mi mayor felicidad, mi razón, mi todo. Te amo más de lo que las palabras pueden expresar.</p>
+            
+            <button class="btn btn-yes" onclick="resetPage()" style="margin-top: 25px;">
+                <i class="fas fa-heart-circle-plus"></i> Ver nuestro momento otra vez
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Variables para contar los "No"
+        let noClickCount = 0;
+        let yesSize = 1;
+        let noSize = 1;
+        
+        // Crear corazones flotantes
+        function createHearts() {
+            const container = document.getElementById('heartsContainer');
+            const heartCount = 30;
+            
+            for (let i = 0; i < heartCount; i++) {
+                const heart = document.createElement('div');
+                heart.classList.add('heart');
+                heart.innerHTML = '❤️';
+                heart.style.left = Math.random() * 100 + '%';
+                heart.style.fontSize = (Math.random() * 15 + 10) + 'px';
+                heart.style.animationDelay = Math.random() * 5 + 's';
+                heart.style.color = i % 3 === 0 ? '#ff4d6d' : (i % 3 === 1 ? '#ff8fa3' : '#ffafbd');
+                container.appendChild(heart);
+            }
+        }
+        
+        // Configurar el contador regresivo para San Valentín
+        function setupCountdown() {
+            const valentinesDay = new Date();
+            valentinesDay.setMonth(1);
+            valentinesDay.setDate(14);
+            valentinesDay.setHours(0, 0, 0, 0);
+            
+            if (valentinesDay < new Date()) {
+                valentinesDay.setFullYear(valentinesDay.getFullYear() + 1);
+            }
+            
+            function updateCountdown() {
+                const now = new Date();
+                const diff = valentinesDay - now;
+                
+                if (diff <= 0) {
+                    document.getElementById('countdown').innerHTML = '<div class="countdown-item"><div class="countdown-number">¡Hoy es nuestro día!</div></div>';
+                    return;
+                }
+                
+                const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+                
+                document.getElementById('days').textContent = days.toString().padStart(2, '0');
+                document.getElementById('hours').textContent = hours.toString().padStart(2, '0');
+                document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
+                document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
+            }
+            
+            updateCountdown();
+            setInterval(updateCountdown, 1000);
+        }
+        
+        // Manejar la subida de foto
+        document.getElementById('photoInput').addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const img = document.getElementById('uploadedPhoto');
+                    img.src = e.target.result;
+                    img.style.display = 'block';
+                    document.querySelector('.photo-placeholder i').style.display = 'none';
+                    
+                    // Efecto especial al subir foto
+                    createPhotoHearts();
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+        
+        // Corazones especiales al subir foto
+        function createPhotoHearts() {
+            const container = document.getElementById('heartsContainer');
+            for (let i = 0; i < 20; i++) {
+                setTimeout(() => {
+                    const heart = document.createElement('div');
+                    heart.classList.add('heart');
+                    heart.innerHTML = '💖';
+                    heart.style.left = '50%';
+                    heart.style.fontSize = '25px';
+                    heart.style.animationDelay = '0s';
+                    heart.style.color = '#ff0066';
+                    heart.style.animationDuration = '3s';
+                    container.appendChild(heart);
+                    
+                    setTimeout(() => {
+                        if (heart.parentNode) heart.remove();
+                    }, 3000);
+                }, i * 100);
+            }
+        }
+        
+        // Manejar el botón SÍ
+        document.getElementById('yesBtn').addEventListener('click', function() {
+            // Efecto de confeti y corazones
+            createLoveExplosion();
+            
+            // Mostrar respuesta positiva después de un breve retraso
+            setTimeout(() => {
+                showYesResponse();
+            }, 800);
+        });
+        
+        // Explosión de amor al decir que sí
+        function createLoveExplosion() {
+            const container = document.getElementById('heartsContainer');
+            const colors = ['#ff0066', '#ff4d6d', '#ff8fa3', '#ffafbd'];
+            
+            for (let i = 0; i < 150; i++) {
+                setTimeout(() => {
+                    const heart = document.createElement('div');
+                    heart.classList.add('heart');
+                    heart.innerHTML = ['💖', '💕', '💗', '💓', '💞'][Math.floor(Math.random() * 5)];
+                    heart.style.left = Math.random() * 100 + '%';
+                    heart.style.fontSize = (Math.random() * 25 + 15) + 'px';
+                    heart.style.animationDelay = '0s';
+                    heart.style.color = colors[Math.floor(Math.random() * colors.length)];
+                    heart.style.animationDuration = (Math.random() * 2 + 2) + 's';
+                    container.appendChild(heart);
+                    
+                    setTimeout(() => {
+                        if (heart.parentNode) heart.remove();
+                    }, 4000);
+                }, i * 10);
+            }
+            
+            // Efecto de sonido (simulado con vibración si está disponible)
+            if (navigator.vibrate) {
+                navigator.vibrate([100, 50, 100, 50, 100]);
+            }
+        }
+        
+        // Mostrar respuesta positiva
+        function showYesResponse() {
+            document.getElementById('mainContent').classList.add('hidden');
+            document.getElementById('yesResponse').classList.remove('hidden');
+            
+            // Mensaje especial en el título
+            document.title = "¡Dulce dijo que SÍ! 💖";
+        }
+        
+        // Manejar el botón NO
+        document.getElementById('noBtn').addEventListener('click', function() {
+            // Incrementar contador de "No"
+            noClickCount++;
+            
+            // Reducir tamaño del botón NO y aumentar el SÍ
+            noSize = Math.max(0.1, noSize - 0.15);
+            yesSize = Math.min(2, yesSize + 0.15);
+            
+            // Aplicar transformaciones
+            this.classList.add('btn-shrink');
+            document.getElementById('yesBtn').classList.add('btn-grow');
+            
+            // Actualizar estilos después de la animación
+            setTimeout(() => {
+                this.style.transform = `scale(${noSize})`;
+                this.style.opacity = Math.max(0.3, 1 - (noClickCount * 0.2));
+                
+                document.getElementById('yesBtn').style.transform = `scale(${yesSize})`;
+                document.getElementById('yesBtn').classList.remove('btn-grow');
+                this.classList.remove('btn-shrink');
+            }, 500);
+            
+            // Crear corazones tristes
+            createSadHearts();
+        });
+        
+        // Corazones tristes al decir que no
+        function createSadHearts() {
+            const container = document.getElementById('heartsContainer');
+            for (let i = 0; i < 10; i++) {
+                setTimeout(() => {
+                    const heart = document.createElement('div');
+                    heart.classList.add('heart');
+                    heart.innerHTML = '💔';
+                    heart.style.left = Math.random() * 100 + '%';
+                    heart.style.fontSize = (Math.random() * 20 + 10) + 'px';
+                    heart.style.animationDelay = '0s';
+                    heart.style.color = '#999';
+                    heart.style.animationDuration = '4s';
+                    container.appendChild(heart);
+                    
+                    setTimeout(() => {
+                        if (heart.parentNode) heart.remove();
+                    }, 4000);
+                }, i * 150);
+            }
+        }
+        
+        // Reiniciar página
+        function resetPage() {
+            document.getElementById('mainContent').classList.remove('hidden');
+            document.getElementById('yesResponse').classList.add('hidden');
+            
+            // Resetear tamaños de botones
+            noClickCount = 0;
+            yesSize = 1;
+            noSize = 1;
+            
+            document.getElementById('yesBtn').style.transform = '';
+            document.getElementById('noBtn').style.transform = '';
+            document.getElementById('noBtn').style.opacity = '';
+            
+            // Restaurar título
+            document.title = "Una pregunta solo para ti, Dulce ❤️";
+        }
+        
+        // Inicializar la página
+        window.onload = function() {
+            createHearts();
+            setupCountdown();
+            
+            // Crear corazones periódicamente
+            setInterval(() => {
+                createFloatingHeart();
+            }, 1500);
+            
+            // Efecto de entrada
+            document.querySelector('.container').style.animation = 'fadeIn 1.5s ease';
+        };
+        
+        // Crear corazón flotante periódico
+        function createFloatingHeart() {
+            const container = document.getElementById('heartsContainer');
+            const heart = document.createElement('div');
+            heart.classList.add('heart');
+            heart.innerHTML = '💖';
+            heart.style.left = Math.random() * 100 + '%';
+            heart.style.fontSize = (Math.random() * 20 + 15) + 'px';
+            heart.style.animationDelay = '0s';
+            heart.style.color = Math.random() > 0.5 ? '#ff4d6d' : '#ff8fa3';
+            heart.style.animationDuration = (Math.random() * 3 + 3) + 's';
+            container.appendChild(heart);
+            
+            setTimeout(() => {
+                if (heart.parentNode) heart.remove();
+            }, 6000);
+        }
+        
+        // Efecto de teclado para acceso directo al SÍ
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'y' || event.key === 'Y' || event.key === 's' || event.key === 'S') {
+                document.getElementById('yesBtn').focus();
+                document.getElementById('yesBtn').style.boxShadow = '0 0 0 3px rgba(76, 175, 80, 0.5)';
+                setTimeout(() => {
+                    document.getElementById('yesBtn').style.boxShadow = '';
+                }, 500);
+            }
+        });
+    </script>
+</body>
+</html>
